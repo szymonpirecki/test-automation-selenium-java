@@ -28,7 +28,7 @@ jobs:
         env:
           TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
           TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
-        run: mvn test -B -Dbrowsername=chrome -DbrowserHeadless=true -DmaximizeWindow=false
+        run: mvn test -B -Dbrowsername=chrome -DbrowserHeadless=true -DmaximizeWindow=false -DexplicitWaitTimeout=30
 
       - name: Upload Surefire reports
         if: always()

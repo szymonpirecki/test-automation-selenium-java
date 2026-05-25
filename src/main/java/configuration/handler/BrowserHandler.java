@@ -1,21 +1,18 @@
 package configuration.handler;
 
 import configuration.model.YamlModel;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.slf4j.Slf4j;
-import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.ie.InternetExplorerOptions;
 
+import java.io.File;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class BrowserHandler {
@@ -32,16 +29,14 @@ public class BrowserHandler {
         for (Map.Entry<String, Object> entry : browserSettingsMap.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
-            if (value instanceof String) {
-                System.setProperty(key, (String) value);
-            } else if (value instanceof Boolean) {
-                System.setProperty(key, Boolean.toString((Boolean) value));
-            } else if (value instanceof Number) {
-                System.setProperty(key, value.toString());
-            } else if (value != null) {
-                System.setProperty(key, value.toString());
+            if (System.getProperty(key) != null) {
+                log.debug("Browser property '{}' already set via CLI — skipping YAML value '{}'", key, value);
+                continue;
             }
-            log.info("{}:{} set", key,value);
+            if (value != null) {
+                System.setProperty(key, value.toString());
+                log.debug("Browser property set: {} = {}", key, value);
+            }
         }
         log.info("Browser properties set.");
     }
@@ -52,9 +47,8 @@ public class BrowserHandler {
         log.info("Initializing driver with browserName: {}", this.browserName);
         switch (this.browserName.toLowerCase()) {
             case "edge" -> driver = getEdgeDriver();
-            case "ie" -> driver = getIeDriver();
             case "firefox" -> driver = getFirefoxDriver();
-            default -> driver = getChromedriver();
+            default -> driver = getChromeDriver();
         }
         if (this.maximizeWindow)
             driver.manage().window().maximize();
@@ -84,42 +78,40 @@ public class BrowserHandler {
     }
 
 
-//    private void setDriversImplicitTimeout(WebDriver driver) {
-//        log.debug("Setting driver's implicit timeout to {} seconds", this.browserImplicitTimeout);
-//        driver.manage().timeouts().implicitlyWait(this.browserImplicitTimeout, TimeUnit.SECONDS);
-//    }
-//
 
     private WebDriver getFirefoxDriver() {
-        WebDriverManager.firefoxdriver().setup();
         FirefoxOptions options = new FirefoxOptions();
         log.debug("Setting headless option to {}", this.browserHeadless);
         if (this.browserHeadless) options.addArguments("--headless");
         return new FirefoxDriver(options);
     }
 
-
-    private WebDriver getIeDriver() {
-        WebDriverManager.iedriver().setup();
-        InternetExplorerOptions options = new InternetExplorerOptions();
-        log.debug("Setting headless option to {}", this.browserHeadless);
-        if (this.browserHeadless) options.addCommandSwitches("--headless");
-        return new InternetExplorerDriver(options);
-    }
-
     private WebDriver getEdgeDriver() {
-        WebDriverManager.edgedriver().setup();
         EdgeOptions options = new EdgeOptions();
         log.debug("Setting headless option to {}", this.browserHeadless);
         if (this.browserHeadless) options.addArguments("--headless");
         return new EdgeDriver(options);
     }
 
-    private WebDriver getChromedriver() {
-        WebDriverManager.chromedriver().setup();
+    // The snap launcher symlink (/snap/bin/chromium.chromedriver) cannot be spawned
+    // by Java's ProcessBuilder — it requires the shell environment that snap sets up.
+    // The actual binary inside the snap mount works directly.
+    private static final String SNAP_CHROMEDRIVER = "/snap/chromium/current/usr/lib/chromium-browser/chromedriver";
+
+    private WebDriver getChromeDriver() {
         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--no-sandbox", "--disable-dev-shm-usage");
         log.debug("Setting headless option to {}", this.browserHeadless);
-        if (this.browserHeadless) options.addArguments("--headless");
+        if (this.browserHeadless) options.addArguments("--headless=new");
+
+        File snapDriver = new File(SNAP_CHROMEDRIVER);
+        if (snapDriver.exists()) {
+            log.info("Using snap chromedriver: {}", SNAP_CHROMEDRIVER);
+            ChromeDriverService service = new ChromeDriverService.Builder()
+                    .usingDriverExecutable(snapDriver)
+                    .build();
+            return new ChromeDriver(service, options);
+        }
         return new ChromeDriver(options);
     }
 }

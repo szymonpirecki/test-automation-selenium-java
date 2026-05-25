@@ -12,7 +12,7 @@ import providers.UrlProvider;
 @Slf4j
 public class TestBase {
 
-    public WebDriver driver;
+    protected WebDriver driver;
 
     @BeforeAll
     static void beforeAll() {
@@ -26,9 +26,7 @@ public class TestBase {
 
     @BeforeEach
     void setUp() {
-        BrowserHandler browserHandler = new BrowserHandler();
-        if (this.driver == null)
-            driver = browserHandler.initDriver();
+        driver = new BrowserHandler().initDriver();
         driver.get(UrlProvider.HOME_URL.getUrl());
     }
 

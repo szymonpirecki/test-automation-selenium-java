@@ -15,11 +15,11 @@ public class AccountPage extends BasePage {
     @FindBy(css = "#history-link")
     WebElement orderHistoryLink;
 
-    public void goToUserAddresses() {
+    public void navigateToAddresses() {
         click(userAddressesLink);
     }
 
-    public void goToOrderHistory() {
+    public void navigateToOrderHistory() {
         click(orderHistoryLink);
     }
 }

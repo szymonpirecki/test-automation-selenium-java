@@ -42,7 +42,7 @@ public class BasketPopUpPage extends BasePage implements BasketPopUpQueryable {
     @FindBy(css = ".product-total .value")
     private WebElement productTotalValue;
 
-    @FindBy(css = ".cart-content-btn .btn-primary")
+    @FindBy(css = ".cart-content-btn .btn-secondary")
     private WebElement continueShoppingBtn;
 
     @FindBy(css = ".cart-content-btn .btn-primary")
@@ -77,11 +77,11 @@ public class BasketPopUpPage extends BasePage implements BasketPopUpQueryable {
         return getBigDecimal(subTotalValue);
     }
 
-    public void clickContinueShoppingBtn() {
+    public void continueShopping() {
         click(continueShoppingBtn);
     }
 
-    public void clickProceedToCheckoutBtn() {
+    public void proceedToCheckout() {
         click(proceedToCheckoutBtn);
     }
 

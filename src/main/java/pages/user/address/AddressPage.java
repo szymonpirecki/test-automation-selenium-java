@@ -17,12 +17,12 @@ public class AddressPage extends BasePage {
     private List<WebElement> userAddressesContainers;
 
     public void deleteAddressesWithoutFlag(String flag) {
-        getUserAddressesContainers().stream()
+        getAddressContainers().stream()
                 .filter(ac -> !ac.getAddressTitle().contains(flag))
-                .forEach(AddressContainerComponent::clickDeleteAddressBtn);
+                .forEach(AddressContainerComponent::deleteAddress);
     }
 
-    private List<AddressContainerComponent> getUserAddressesContainers() {
+    private List<AddressContainerComponent> getAddressContainers() {
         waitForAllElements(userAddressesContainers);
         return userAddressesContainers.stream()
                 .map(ac -> new AddressContainerComponent(driver, ac))

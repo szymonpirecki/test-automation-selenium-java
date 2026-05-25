@@ -1,24 +1,24 @@
 package filterTests;
 
 import base.TestBase;
+import flows.product.FilterFlows;
+import flows.product.ProductFlows;
 import lombok.extern.slf4j.Slf4j;
+import model.testdata.FilterTestData;
 import org.junit.jupiter.api.BeforeEach;
-import steps.product.FilterSteps;
-import steps.product.ProductSteps;
-
-import java.math.BigDecimal;
+import providers.TestDataProvider;
 
 @Slf4j
 public class FilterBase extends TestBase {
-    protected final String category = System.getProperty("filterTests-category");
-    protected final BigDecimal minPrice = new BigDecimal(System.getProperty("filterTests-minPrice"));
-    protected final BigDecimal maxPrice = new BigDecimal(System.getProperty("filterTests-maxPrice"));
-    protected FilterSteps filterSteps;
-    protected ProductSteps productSteps;
+
+    protected final FilterTestData testData = TestDataProvider.filterTestData();
+
+    FilterFlows filterFlows;
+    ProductFlows productFlows;
 
     @BeforeEach
-    public void init(){
-        filterSteps = new FilterSteps(driver);
-        productSteps = new ProductSteps(driver);
+    public void init() {
+        filterFlows = new FilterFlows(driver);
+        productFlows = new ProductFlows(driver);
     }
 }

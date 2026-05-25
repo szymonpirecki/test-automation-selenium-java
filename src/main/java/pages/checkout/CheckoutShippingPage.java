@@ -28,7 +28,7 @@ public class CheckoutShippingPage extends BasePage {
     }
 
 
-    public void clickConfirmShippingBtn() {
+    public void confirmShippingMethod() {
         click(confirmShippingBtn);
     }
 

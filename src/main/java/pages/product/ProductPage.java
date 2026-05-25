@@ -1,11 +1,12 @@
 package pages.product;
 
 import lombok.Getter;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import pages.base.BasePage;
-import pages.basket.BasketPopUpPage;
 
 import java.math.BigDecimal;
 
@@ -29,8 +30,8 @@ public class ProductPage extends BasePage {
         return this;
     }
 
-    public void clickAddToCart() {
+    public void addToCart() {
         click(addToCartBtn);
-        new BasketPopUpPage(driver);
+        defaultWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#myModalLabel")));
     }
 }

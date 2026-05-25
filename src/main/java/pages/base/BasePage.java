@@ -20,9 +20,9 @@ import java.util.Locale;
 @Slf4j
 public class BasePage {
 
-    public WebDriver driver;
-    public WebDriverWait defaultWait;
-    public Actions actions;
+    protected WebDriver driver;
+    protected WebDriverWait defaultWait;
+    protected Actions actions;
 
     public BasePage(WebDriver driver) {
         init(driver);

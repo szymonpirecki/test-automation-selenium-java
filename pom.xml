@@ -4,23 +4,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>SeleniumAdvancedBigProject</artifactId>
+    <groupId>io.github.szymonpirecki</groupId>
+    <artifactId>test-automation-selenium-java</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <selenium.version>4.15.0</selenium.version>
-        <seleniumWebDriverManager.version>5.6.2</seleniumWebDriverManager.version>
-        <assertJ.version>3.24.2</assertJ.version>
-        <jUnit.version>5.8.1</jUnit.version>
-        <logback.version>1.4.11</logback.version>
-        <lombok.version>1.18.30</lombok.version>
-        <apache.commons.version>3.13.0</apache.commons.version>
-        <jackson.version>2.16.0</jackson.version>
+        <selenium.version>4.21.0</selenium.version>
+        <assertJ.version>3.26.3</assertJ.version>
+        <jUnit.version>5.11.3</jUnit.version>
+        <logback.version>1.5.12</logback.version>
+        <lombok.version>1.18.34</lombok.version>
+        <apache.commons.version>3.17.0</apache.commons.version>
+        <jackson.version>2.18.1</jackson.version>
         <javaFaker.version>1.0.2</javaFaker.version>
-        <snakeyaml.version>2.2</snakeyaml.version>
+        <snakeyaml.version>2.3</snakeyaml.version>
     </properties>
     <dependencies>
         <dependency>
@@ -68,7 +67,6 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>${assertJ.version}</version>
-<!--            <scope>test</scope>-->
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -76,15 +74,9 @@
             <version>${selenium.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.github.bonigarcia</groupId>
-            <artifactId>webdrivermanager</artifactId>
-            <version>${seleniumWebDriverManager.version}</version>
-        </dependency>
-        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
-<!--            <scope>test</scope>-->
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -100,14 +92,8 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
+            <version>24.1.0</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
         </dependency>
 
     </dependencies>
@@ -116,15 +102,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M3</version>
-                <configuration>
-
-                </configuration>
+                <version>3.5.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.13.0</version>
                 <configuration>
                     <source>17</source>
                     <target>17</target>

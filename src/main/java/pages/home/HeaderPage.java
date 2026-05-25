@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import pages.base.BasePage;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 public class HeaderPage extends BasePage {
 
@@ -45,15 +45,15 @@ public class HeaderPage extends BasePage {
     @FindBy(css = ".ui-menu-item")
     private List<WebElement> searchSuggestions;
 
-    public void sendKeysToSearch(String searchText) {
+    public void typeInSearchBox(String searchText) {
         sendKeys(searchInput, searchText);
     }
 
-    public void clickSearchBtn() {
+    public void submitSearch() {
         defaultWait.until(ExpectedConditions.elementToBeClickable(searchBtn)).click();
     }
 
-    public List<String> getAllSearchSuggestions() {
+    public List<String> getSearchSuggestions() {
         waitForElement(searchSuggestionsDropdown);
         return searchSuggestions.stream().map(WebElement::getText).toList();
     }
@@ -65,24 +65,25 @@ public class HeaderPage extends BasePage {
                 .toList();
     }
 
-    public void goToCategory(String categoryName) {
+    public void navigateToCategory(String categoryName) {
         waitForElement(categoriesMenu);
-        Optional<WebElement> category = mainCategories.stream()
+        mainCategories.stream()
                 .filter(c -> c.getText().equals(categoryName))
-                .findFirst();
-        category.ifPresent(WebElement::click);
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Category not found in navigation menu: " + categoryName))
+                .click();
     }
 
-    public int getCartProductCount() {
+    public int getCartItemCount() {
         waitForElement(cartProductCount);
         return getInt(cartProductCount);
     }
 
-    public void goToAccountPage() {
+    public void navigateToAccount() {
         click(userAccountLink);
     }
 
-    public void goHomePage() {
+    public void navigateToHomePage() {
         click(logo);
     }
 }

@@ -24,16 +24,16 @@ public class ProductMiniatureComponent extends BasePage implements ProductQuerya
     @FindBy(css = ".price")
     private WebElement productPrice;
 
-    public String getProductTitle() {
+    public String getName() {
         waitForElement(productTitle);
         return productTitle.getText();
     }
 
-    public BigDecimal getProductPrice() {
+    public BigDecimal getPrice() {
         return getBigDecimal(productPrice);
     }
 
-    public void goToProductPage() {
+    public void open() {
         waitForElement(productTitle);
         productTitle.click();
     }
@@ -41,6 +41,6 @@ public class ProductMiniatureComponent extends BasePage implements ProductQuerya
 
     @Override
     public Product toProductModel() {
-        return new Product(getProductTitle(), getProductPrice());
+        return new Product(getName(), getPrice());
     }
 }

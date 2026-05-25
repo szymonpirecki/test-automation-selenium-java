@@ -23,11 +23,11 @@ public class CheckoutPaymentPage extends BasePage {
         payByCheckRadioBtn.click();
     }
 
-    public void approveConditions() {
+    public void acceptTermsAndConditions() {
         conditionsToApproveCheckbox.click();
     }
 
-    public void clickPlaceOrderBtn() {
+    public void placeOrder() {
         click(placeOrderBtn);
     }
 }

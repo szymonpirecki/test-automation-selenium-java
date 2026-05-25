@@ -29,7 +29,7 @@ public class BasketPage extends BasePage implements BasketQueryable {
     @FindBy(css = "#cart-subtotal-products .value")
     private WebElement productsInBasketValue;
 
-    @FindBy(css = "cart-subtotal-shipping .value")
+    @FindBy(css = "#cart-subtotal-shipping .value")
     private WebElement shippingPrice;
 
     @FindBy(css = ".cart-total .value")
@@ -50,9 +50,9 @@ public class BasketPage extends BasePage implements BasketQueryable {
                 .toList();
     }
 
-    public BasketLine getFirstBasketLine() {
+    public BasketLine getFirstCartLine() {
         if (basketLines.isEmpty()) {
-            log.error("Basket is empty, cannot return basket line");
+            throw new NoSuchElementException("Cannot retrieve first cart line — basket is empty");
         }
         return getBasketLines().get(0);
     }
@@ -62,7 +62,7 @@ public class BasketPage extends BasePage implements BasketQueryable {
         return getBigDecimal(basketTotalValue);
     }
 
-    public void clickProceedToCheckoutBtn() {
+    public void proceedToCheckout() {
         click(proceedToCheckoutBtn);
     }
 
@@ -70,12 +70,12 @@ public class BasketPage extends BasePage implements BasketQueryable {
         return new Basket(getBasketLines());
     }
 
-    public void removeProductFromBasket(Product product) {
+    public void removeProduct(Product product) {
         getBasketLineComponents().stream()
-                .filter(l -> l.getProductName().equals(product.getName()))
+                .filter(l -> l.getName().equals(product.getName()))
                 .findAny()
-                .orElseThrow(() ->new NoSuchElementException("Product not found in the basket"))
-                .clickRemoveBtn();
+                .orElseThrow(() -> new NoSuchElementException("Product not found in basket: " + product.getName()))
+                .remove();
     }
 
 }

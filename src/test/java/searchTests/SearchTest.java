@@ -1,34 +1,39 @@
 package searchTests;
 
 import model.basket.Product;
-import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Search")
 public class SearchTest extends SearchBase {
 
-    @RepeatedTest(1)
-    public void shouldSearchRandomProductTest() {
-        var randomProductName = productSteps.getRandomProduct().getName();
-        List<Product> searchResultList = searchSteps
-                .searchForProduct(randomProductName)
-                .getProductsList();
+    @Test
+    @DisplayName("Should return matching results when searching by a randomly selected product name")
+    public void shouldReturnResultsForRandomProductTest() {
+        var randomProductName = productFlows.getRandomProduct().getName();
+        List<Product> results = searchFlows
+                .search(randomProductName)
+                .getProducts();
 
-        assertThat(searchResultList)
+        assertThat(results)
                 .isNotEmpty()
-                .allSatisfy(product -> product.getName().equals(randomProductName));
+                .allSatisfy(product ->
+                        assertThat(product.getName()).containsIgnoringCase(randomProductName));
     }
 
-    @RepeatedTest(1)
-    public void shouldSuggestSpecificProductsDuringSearchingTest() {
-        List<String> searchSuggestions = searchSteps
-                .sendKeysToSearch(keyword)
+    @Test
+    @DisplayName("Should show autocomplete suggestions containing the typed keyword")
+    public void shouldShowAutocompleteSuggestionsTest() {
+        List<String> suggestions = searchFlows
+                .typeSearchQuery(testData.keyword())
                 .getSearchSuggestions();
 
-        assertThat(searchSuggestions)
+        assertThat(suggestions)
                 .isNotEmpty()
-                .allMatch(suggestion -> suggestion.contains(keyword));
+                .allMatch(suggestion -> suggestion.contains(testData.keyword()));
     }
 }

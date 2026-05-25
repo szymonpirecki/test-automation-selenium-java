@@ -28,25 +28,25 @@ public class BasketLineComponent extends BasePage implements BasketLineQueryable
     @FindBy(css = ".remove-from-cart")
     private WebElement removeFromCartBtn;
 
-    public String getProductName() {
+    public String getName() {
         return productName.getText();
     }
 
-    public BigDecimal getProductPrice() {
+    public BigDecimal getUnitPrice() {
         return getBigDecimal(productPrice);
     }
 
-    public int getProductQuantity() {
+    public int getQuantity() {
         return getValue(productQuantity);
     }
 
-    public void clickRemoveBtn() {
+    public void remove() {
         click(removeFromCartBtn);
         defaultWait.until(ExpectedConditions.stalenessOf(removeFromCartBtn));
     }
 
     @Override
     public BasketLine toBasketLineModel() {
-        return new BasketLine(new Product(getProductName(), getProductPrice()), getProductQuantity());
+        return new BasketLine(new Product(getName(), getUnitPrice()), getQuantity());
     }
 }

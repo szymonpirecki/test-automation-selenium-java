@@ -1,4 +1,4 @@
-#available browsers: CHROME, FIREFOX, IE, EDGE
+#available browsers: CHROME, FIREFOX
 #available environments: test
 environment: test
 
@@ -14,27 +14,34 @@ environments:
       home: http://146.59.32.4/index.php
       basket: http://146.59.32.4/index.php?controller=cart&action=show
       login: http://146.59.32.4/index.php?controller=authentication&back=my-account
-    explicitWaitTimeout: 5
+    explicitWaitTimeout: 10
+
     shippingPrice: 7
     market: US
     currency: $
+
     searchTests:
       keyword: HUMMINGBIRD
+
     filterTests:
       minPrice: 13
       maxPrice: 15
       category: ACCESSORIES
+
     basketTests:
       category: ART
       productName: THE BEST IS YET POSTER
       productQuantity: 3
+      
     checkoutTests:
       paymentStatus: Awaiting check payment
       user:
         firstName: Tomasz
         lastName: Fromage
-        email: tomasz.fromage@test.pl
-        password: tomfrom
+        # Credentials are loaded from env vars TEST_USER_EMAIL / TEST_USER_PASSWORD.
+        # These fallback values are intentionally empty — do not commit real credentials here.
+        email: ""
+        password: ""
       deliveryAddress:
         address: test 1a/2
         postCode: 12-345

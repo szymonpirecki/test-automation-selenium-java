@@ -1,25 +1,22 @@
 package basketTests;
 
 import base.TestBase;
+import flows.basket.BasketFlows;
+import flows.product.ProductFlows;
+import model.testdata.BasketTestData;
 import org.junit.jupiter.api.BeforeEach;
-import steps.basket.BasketSteps;
-import steps.product.ProductSteps;
-
-import java.math.BigDecimal;
+import providers.TestDataProvider;
 
 public class BasketBase extends TestBase {
-    protected final String categoryName = System.getProperty("basketTests-category");
-    protected final String productName = System.getProperty("basketTests-productName");
-    protected final int productQuantity = Integer.parseInt(System.getProperty("basketTests-productQuantity"));
-    protected final BigDecimal shippingPrice = new BigDecimal(System.getProperty("shippingPrice"));
 
-    BasketSteps basketSteps;
-    ProductSteps productSteps;
+    protected final BasketTestData testData = TestDataProvider.basketTestData();
 
+    BasketFlows basketFlows;
+    ProductFlows productFlows;
 
     @BeforeEach
     public void setUpBasket() {
-        productSteps = new ProductSteps(driver);
-        basketSteps = new BasketSteps(driver);
+        productFlows = new ProductFlows(driver);
+        basketFlows = new BasketFlows(driver);
     }
 }

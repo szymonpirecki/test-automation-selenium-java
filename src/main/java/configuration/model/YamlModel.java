@@ -2,11 +2,17 @@ package configuration.model;
 
 import lombok.Getter;
 
-import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 public class YamlModel {
+
+    private Map<String, EnvironmentModel> environments;
     private String environment;
-    private HashMap<String, Object> browserSettings;
-    private HashMap<String, EnvironmentModel> environments;
+
+    private Map<String, Object> browserSettings;
+
+    public EnvironmentModel getCurrentEnvironment() {
+        return environments.get(environment);
+    }
 }

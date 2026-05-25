@@ -1,36 +1,43 @@
 package checkoutTests;
 
-import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
+@DisplayName("Checkout")
 public class CheckoutTest extends CheckoutBase {
 
-
-    @RepeatedTest(1)
+    @Test
+    @DisplayName("Should complete full purchase flow: login, add product, checkout with invoice address, and verify order in history")
     public void shouldGoThroughBuyingProcessTest() {
-        prepSteps
-                .goToLoginPage()
-                .logInUser(email, password)
-                .removeRedundantAddressData();
+        loginFlows
+                .navigateToLoginPage()
+                .loginAs(testData.credentials().email(), testData.credentials().password())
+                .cleanUpAddresses();
 
-        var product = productSteps
-                .goToCategory(category)
-                .getProductDetails(productName);
+        var product = productFlows
+                .navigateToCategory(testData.productCategory())
+                .findProduct(testData.productName());
 
-        basketSteps
-                .addProductToBasket(product, productQuantity)
+        basketFlows
+                .addProductToBasket(product, testData.productQuantity())
                 .proceedToCheckout();
 
-        var orderNumber = checkoutSteps
-                .setInvoiceAddress(invoiceAddress, invoicePostCode, invoiceCity, invoiceCountry)
-                .setDeliveryOption(shippingPrice)
-                .setPaymentOption()
+        var orderNumber = checkoutFlows
+                .enterInvoiceAddress(testData.invoiceAddress())
+                .selectDeliveryOption(testData.shippingPrice())
+                .selectPayByCheck()
                 .placeOrder()
-                .getOrderNumber();
+                .getOrderReferenceNumber();
 
-        accountSteps
-                .goToAccount()
-                .goToOrders()
-                .goToOrderDetails(orderNumber)
-                .checkOrderDetails(orderNumber, deliveryAddressContent, invoiceAddressContent, expectedPaymentStatus);
+        accountFlows
+                .navigateToAccount()
+                .navigateToOrderHistory()
+                .navigateToOrderDetails(orderNumber)
+                .verifyOrderDetails(
+                        orderNumber,
+                        testData.deliveryAddressParts(),
+                        testData.invoiceAddressParts(),
+                        testData.expectedPaymentStatus()
+                );
     }
 }

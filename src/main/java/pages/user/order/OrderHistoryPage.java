@@ -18,19 +18,18 @@ public class OrderHistoryPage extends BasePage {
     private List<WebElement> userOrders;
 
 
-    public OrderLineComponent getSpecificOrderLine(String orderReferenceNumber) {
-        return getUserOrderLines().stream()
-                .filter(l -> l.getReferenceNumber().equalsIgnoreCase(orderReferenceNumber))
+    public OrderLineComponent findOrderByReference(String referenceNumber) {
+        return getOrderLines().stream()
+                .filter(l -> l.getReferenceNumber().equalsIgnoreCase(referenceNumber))
                 .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Order line not found for reference number: " + orderReferenceNumber));
+                .orElseThrow(() -> new NoSuchElementException("Order not found for reference: " + referenceNumber));
     }
 
-
-    private List<OrderLineComponent> getUserOrderLines() {
-        List<OrderLineComponent> rowPages = new ArrayList<>();
+    private List<OrderLineComponent> getOrderLines() {
+        List<OrderLineComponent> rows = new ArrayList<>();
         for (WebElement row : userOrders) {
-            rowPages.add(new OrderLineComponent(driver, row));
+            rows.add(new OrderLineComponent(driver, row));
         }
-        return rowPages;
+        return rows;
     }
 }

@@ -28,11 +28,11 @@ public class CategoryPage extends BasePage {
     @FindBy(css = ".block-category > h1")
     private WebElement categoryHeader;
 
-    public boolean checkIfHasSubCategories() {
+    public boolean hasSubCategories() {
         return !subCategories.isEmpty();
     }
 
-    public void goToSubCategory(String subCategoryName) {
+    public void navigateToSubCategory(String subCategoryName) {
         waitForAllElements(subCategories);
         subCategories.stream()
                 .filter(c -> c.getText().equalsIgnoreCase(subCategoryName))
@@ -48,11 +48,11 @@ public class CategoryPage extends BasePage {
                 .toList();
     }
 
-    public int getTotalProductsCount(){
+    public int getTotalProductCount() {
         return getInt(totalProductsLbl);
     }
 
-    public String getCategoryHeader(){
+    public String getCategoryTitle() {
         return categoryHeader.getText();
     }
 

@@ -26,7 +26,7 @@ public class OrderLineComponent extends BasePage {
     @FindBy(xpath = "./td[6]/a[@data-link-action='view-order-details']")
     private WebElement orderDetailsLink;
 
-    public void goToOrderDetailsPage() {
+    public void viewDetails() {
         click(orderDetailsLink);
     }
 

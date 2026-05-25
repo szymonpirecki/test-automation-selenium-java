@@ -41,38 +41,38 @@ public class ProductFilterPage extends BasePage {
         LEFT, RIGHT
     }
 
-    public void waitForReload() {
+    public void waitForFilterReload() {
         defaultWait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".faceted-overlay")));
     }
 
-    public void clearFilter() {
+    public void clearAllFilters() {
         click(clearFilterBtn);
-        waitForReload();
+        waitForFilterReload();
     }
 
-    public boolean isFilterTableDisplayed() {
-        log.info("Checking if filter table is displayed");
+    public boolean isFilterPanelDisplayed() {
+        log.debug("Verifying filter panel is visible");
         return productFilterTable.isDisplayed();
     }
 
     public void adjustSliderHandle(SliderType sliderType, BigDecimal currentValue, BigDecimal desiredValue) {
         WebElement sliderHandle = (sliderType.equals(SliderType.LEFT)) ? priceSliderHandleLeft : priceSliderHandleRight;
 
-        int adjustments = determineAdjustmentAmount(currentValue, desiredValue);
-        if (adjustments == 0) return;
+        int steps = calculateSliderSteps(currentValue, desiredValue);
+        if (steps == 0) return;
 
-        Keys keyToSend = determineAdjustmentDirection(currentValue, desiredValue);
-        for (int i = 0; i < adjustments; i++) {
+        Keys direction = resolveSliderDirection(currentValue, desiredValue);
+        for (int i = 0; i < steps; i++) {
             waitForElement(priceScope);
-            sliderHandle.sendKeys(keyToSend);
-            waitForReload();
-            log.info("adjustment number: {}", i + 1);
+            sliderHandle.sendKeys(direction);
+            waitForFilterReload();
+            log.debug("Slider step {}/{}", i + 1, steps);
         }
-        log.info("Slider was adjusted {} times in {} direction", adjustments, keyToSend);
+        log.debug("Slider adjusted {} step(s) in {} direction", steps, direction);
     }
 
 
-    private BigDecimal[] getPriceRangeFromWebsite() {
+    private BigDecimal[] readPriceRangeFromSlider() {
         waitForElement(priceScope);
         String[] values = priceScope.getText().split("-");
         return Arrays.stream(values)
@@ -81,21 +81,19 @@ public class ProductFilterPage extends BasePage {
                 .toArray(BigDecimal[]::new);
     }
 
-    public BigDecimal getMinPriceFromWebsite() {
-        BigDecimal[] priceRangeFromWebsite = getPriceRangeFromWebsite();
-        return priceRangeFromWebsite[0];
+    public BigDecimal getCurrentMinPrice() {
+        return readPriceRangeFromSlider()[0];
     }
 
-    public BigDecimal getMaxPriceFromWebsite() {
-        BigDecimal[] priceRangeFromWebsite = getPriceRangeFromWebsite();
-        return priceRangeFromWebsite[1];
+    public BigDecimal getCurrentMaxPrice() {
+        return readPriceRangeFromSlider()[1];
     }
 
-    private Keys determineAdjustmentDirection(BigDecimal currentValue, BigDecimal desiredValue) {
+    private Keys resolveSliderDirection(BigDecimal currentValue, BigDecimal desiredValue) {
         return currentValue.compareTo(desiredValue) < 0 ? Keys.RIGHT : Keys.LEFT;
     }
 
-    private int determineAdjustmentAmount(BigDecimal currentValue, BigDecimal desiredValue) {
+    private int calculateSliderSteps(BigDecimal currentValue, BigDecimal desiredValue) {
         return currentValue.subtract(desiredValue).abs().intValue();
     }
 }

@@ -1,58 +1,62 @@
 package basketTests;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
+@DisplayName("Basket")
 public class BasketTest extends BasketBase {
 
-    @RepeatedTest(1)
+    @Test
+    @DisplayName("Should add a product to the basket and reflect the correct popup content and cart count")
     public void shouldAddProductToBasketTest() {
-        var product = productSteps
-                .goToCategory(categoryName)
-                .getProductDetails(productName);
+        var product = productFlows
+                .navigateToCategory(testData.category())
+                .findProduct(testData.productName());
 
-        basketSteps
-                .addProductToBasket(product, productQuantity)
-                .checkBasketPopUpContent(product, productQuantity, shippingPrice)
-                .checkBasketProductCounter(productQuantity);
+        basketFlows
+                .addProductToBasket(product, testData.productQuantity())
+                .verifyCartPopUpContent(product, testData.productQuantity(), testData.shippingPrice())
+                .closeCartPopup()
+                .verifyCartItemCount(testData.productQuantity());
     }
 
-    @RepeatedTest(1)
+    @Test
+    @DisplayName("Should add 10 random products and verify basket contents match expected state")
     public void shouldAddRandomProductsToBasketTest() {
         for (int i = 0; i < 10; i++) {
-            basketSteps
-                    .addProductToBasket(productSteps.getRandomProduct(), productSteps.getRandomQuantity())
+            basketFlows
+                    .addProductToBasket(productFlows.getRandomProduct(), productFlows.getRandomQuantity())
                     .continueShopping();
         }
-        basketSteps
-                .checkBasketContent();
+        basketFlows.verifyCartContents();
     }
 
-    @RepeatedTest(1)
+    @Test
+    @DisplayName("Should remove all products from the basket one by one and verify total updates correctly")
     public void shouldRemoveProductsFromBasketTest() {
         for (int i = 0; i < 2; i++) {
-            basketSteps
-                    .addProductToBasket(productSteps.getRandomProduct(), productSteps.getRandomQuantity())
+            basketFlows
+                    .addProductToBasket(productFlows.getRandomProduct(), productFlows.getRandomQuantity())
                     .continueShopping();
         }
-        var numberOfBasketLines = basketSteps
-                .goToBasket()
+        var itemCount = basketFlows
+                .navigateToBasket()
                 .getActualBasket().getBasketContent().size();
 
-        assertThat(numberOfBasketLines)
-                .isGreaterThan(0)
-                .withFailMessage("No products in the basket");
+        assertThat(itemCount)
+                .withFailMessage("Basket should not be empty before removal")
+                .isGreaterThan(0);
 
-        for (int i = 0; i < numberOfBasketLines; i++) {
-            basketSteps
-                    .checkBasketTotalValue()
-                    .removeFirstBasketLineFromBasket()
-                    .checkBasketTotalValue();
+        for (int i = 0; i < itemCount; i++) {
+            basketFlows
+                    .verifyCartTotalValue()
+                    .removeFirstItem()
+                    .verifyCartTotalValue();
         }
-        basketSteps
-                .checkBasketProductCounter(0);
+        basketFlows.verifyCartItemCount(0);
     }
 }

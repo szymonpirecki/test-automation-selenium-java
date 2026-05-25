@@ -26,18 +26,18 @@ public class CheckoutAddressPage extends BasePage {
     @FindBy(css = "button[name='confirm-addresses']")
     WebElement confirmAddressButton;
 
-    public void clickDifferentInvoiceAddressLink() {
+    public void selectDifferentInvoiceAddress() {
         click(differentInvoiceAddressLink);
     }
 
-    public void provideAddress(String address, String postCode, String city, String country) {
+    public void fillAddress(String address, String postCode, String city, String country) {
         sendKeys(addressInput, address);
         sendKeys(postCodeInput, postCode);
         sendKeys(cityInput, city);
         selectByVisibleText(countrySelect, country);
     }
 
-    public void clickConfirmAddressBtn() {
+    public void confirmAddress() {
         click(confirmAddressButton);
     }
 

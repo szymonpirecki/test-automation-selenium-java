@@ -1,26 +1,27 @@
 package filterTests;
 
-import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Product Filter")
 public class FilterTest extends FilterBase {
 
-
-    @RepeatedTest(1)
-    public void filterTest() {
-        var productCountBeforeFilter = productSteps
-                .goToCategory(category)
+    @Test
+    @DisplayName("Should filter products by price range and restore full count after clearing filters")
+    public void shouldFilterProductsByPriceRangeTest() {
+        var productCountBeforeFilter = productFlows
+                .navigateToCategory(testData.category())
                 .getProductCount();
 
-        var filteredProducts = filterSteps
-                .setPriceScope(minPrice, maxPrice)
-                .getProductsList();
+        var filteredProducts = filterFlows
+                .applyPriceFilter(testData.minPrice(), testData.maxPrice())
+                .getProducts();
 
-        filterSteps
-                .checkFilteredProducts(filteredProducts, minPrice, maxPrice);
+        filterFlows.verifyProductsWithinPriceRange(filteredProducts, testData.minPrice(), testData.maxPrice());
 
-        var productCountAfterClear = filterSteps
+        var productCountAfterClear = filterFlows
                 .clearFilters()
                 .getProductCount();
 

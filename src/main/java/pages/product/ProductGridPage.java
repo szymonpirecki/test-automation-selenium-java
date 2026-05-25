@@ -24,30 +24,28 @@ public class ProductGridPage extends BasePage {
         return productsOnGrid.size();
     }
 
-    public List<ProductMiniatureComponent> getProductsMiniatureList() {
+    public List<ProductMiniatureComponent> getProductCards() {
         return productsOnGrid.stream()
                 .map(p -> new ProductMiniatureComponent(driver, p))
                 .toList();
     }
 
-    public List<Product> getProductsList() {
-        return getProductsMiniatureList().stream()
+    public List<Product> getProducts() {
+        return getProductCards().stream()
                 .map(ProductMiniatureComponent::toProductModel)
                 .toList();
     }
 
-
-    public void goToProductPage(String productName) {
-        getProductsMiniatureList().stream()
-                .filter(p -> p.getProductTitle().equalsIgnoreCase(productName))
+    public void openProduct(String productName) {
+        getProductCards().stream()
+                .filter(p -> p.getName().equalsIgnoreCase(productName))
                 .findAny()
                 .orElseThrow(() -> new NoSuchElementException("Product not found: " + productName))
-                .goToProductPage();
+                .open();
     }
 
-
-    public Product getSpecificProduct(String productName) {
-        return getProductsList().stream()
+    public Product findProduct(String productName) {
+        return getProducts().stream()
                 .filter(p -> p.getName().equals(productName))
                 .findAny()
                 .orElseThrow(() -> new NoSuchElementException("Product not found: " + productName));

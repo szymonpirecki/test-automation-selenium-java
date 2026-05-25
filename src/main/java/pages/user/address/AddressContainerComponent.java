@@ -21,7 +21,7 @@ public class AddressContainerComponent extends BasePage {
         return addressTitle.getText();
     }
 
-    public void clickDeleteAddressBtn() {
+    public void deleteAddress() {
         click(deleteAddressBtn);
         defaultWait.until(ExpectedConditions.stalenessOf(deleteAddressBtn));
     }

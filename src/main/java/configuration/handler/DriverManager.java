@@ -28,9 +28,12 @@ public class DriverManager {
     public static void quit() {
         WebDriver driver = driverHolder.get();
         if (driver != null) {
-            driver.quit();
-            driverHolder.remove();
-            log.info("Driver quit on thread [{}]", Thread.currentThread().getName());
+            try {
+                driver.quit();
+            } finally {
+                driverHolder.remove();
+                log.info("Driver quit on thread [{}]", Thread.currentThread().getName());
+            }
         }
     }
 }

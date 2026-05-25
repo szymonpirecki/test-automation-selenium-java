@@ -20,6 +20,10 @@ public class TestBase {
 
     @BeforeEach
     void setUp() {
+        log.info("[SETUP]  class={} thread={} id={}",
+                getClass().getSimpleName(),
+                Thread.currentThread().getName(),
+                Thread.currentThread().getId());
         DriverManager.initDriver();
         DriverManager.getDriver().get(UrlProvider.HOME_URL.getUrl());
     }
@@ -27,5 +31,9 @@ public class TestBase {
     @AfterEach
     void tearDown() {
         DriverManager.quit();
+        log.info("[TEARDOWN] class={} thread={} id={}",
+                getClass().getSimpleName(),
+                Thread.currentThread().getName(),
+                Thread.currentThread().getId());
     }
 }

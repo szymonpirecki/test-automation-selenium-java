@@ -102,7 +102,9 @@ public class BrowserHandler {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--no-sandbox", "--disable-dev-shm-usage");
         log.debug("Setting headless option to {}", this.browserHeadless);
-        if (this.browserHeadless) options.addArguments("--headless=new");
+        if (this.browserHeadless) {
+            options.addArguments("--headless=new", "--window-size=1920,1080");
+        }
 
         File snapDriver = new File(SNAP_CHROMEDRIVER);
         if (snapDriver.exists()) {

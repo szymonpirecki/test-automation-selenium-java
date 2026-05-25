@@ -19,7 +19,8 @@ public class TestDataProvider {
         return new CheckoutTestData(
                 new Credentials(
                         resolveEnv("TEST_USER_EMAIL", c.getUser().getEmail()),
-                        resolveEnv("TEST_USER_PASSWORD", c.getUser().getPassword())),
+                        resolveEnv("TEST_USER_PASSWORD", c.getUser().getPassword())
+                ),
                 c.getUser().getFirstName(),
                 c.getUser().getLastName(),
                 toAddress(c.getDeliveryAddress()),

@@ -31,7 +31,7 @@ public class BaseFlows {
     public <T extends BasePage> void at(Class<T> pageType, Consumer<T> pageAction) {
         log.debug("Initialising page: {}", pageType.getSimpleName());
         try {
-            var page = pageType.getDeclaredConstructor().newInstance();
+            T page = pageType.getDeclaredConstructor().newInstance();
             pageAction.accept(page);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException("Failed to initialize page: " + pageType.getSimpleName(), e);

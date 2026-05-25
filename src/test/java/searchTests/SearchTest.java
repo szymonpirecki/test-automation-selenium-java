@@ -14,7 +14,7 @@ public class SearchTest extends SearchBase {
     @Test
     @DisplayName("Should return matching results when searching by a randomly selected product name")
     public void shouldReturnResultsForRandomProductTest() {
-        var randomProductName = productFlows.getRandomProduct().getName();
+        String randomProductName = productFlows.getRandomProduct().getName();
         List<Product> results = searchFlows
                 .search(randomProductName)
                 .getProducts();

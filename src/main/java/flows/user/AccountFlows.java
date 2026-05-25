@@ -49,14 +49,14 @@ public class AccountFlows extends BaseFlows {
     }
 
     private String buildExpectedConfirmationTitle(String orderReferenceNumber) {
-        var pattern = "Order Reference " + orderReferenceNumber + " - placed on " + new SimpleDateFormat("MM/dd/yyyy").format(new Date());
+        String pattern = "Order Reference " + orderReferenceNumber + " - placed on " + new SimpleDateFormat("MM/dd/yyyy").format(new Date());
         return Pattern.quote(pattern);
     }
 
     // Assertions
     public void verifyOrderDetails(String orderNumber, List<String> deliveryAddressContent, List<String> invoiceAddressContent, String expectedPaymentStatus) {
-        var softly = new SoftAssertions();
-        var orderDetails = at(OrderDetailsPage.class).toOrderDetailsModel();
+        SoftAssertions softly = new SoftAssertions();
+        OrderDetails orderDetails = at(OrderDetailsPage.class).toOrderDetailsModel();
         verifyAddressContains(softly, orderDetails.getInvoiceAddress(), invoiceAddressContent);
         verifyAddressContains(softly, orderDetails.getDeliveryAddress(), deliveryAddressContent);
         verifyConfirmationTitle(softly, orderDetails, orderNumber);

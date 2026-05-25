@@ -68,8 +68,8 @@ public class BasketFlows extends BaseFlows {
     // Assertions
     public BasketFlows verifyCartPopUpContent(Product product, int quantity, BigDecimal shippingPrice) {
         at(BasketPopUpPage.class, p -> {
-            var actual = p.toBasketPopUpModel();
-            var expected = BasketPopUp.createExpectedPopUpContent(expectedBasket, product, quantity, shippingPrice);
+            BasketPopUp actual = p.toBasketPopUpModel();
+            BasketPopUp expected = BasketPopUp.createExpectedPopUpContent(expectedBasket, product, quantity, shippingPrice);
 
             assertThat(actual)
                     .usingRecursiveComparison(AssertJConfigHelper.getBigDecimalComparisonConfig())
@@ -79,7 +79,7 @@ public class BasketFlows extends BaseFlows {
     }
 
     public void verifyCartItemCount(int expectedCount) {
-        var actual = at(HeaderPage.class).getCartItemCount();
+        int actual = at(HeaderPage.class).getCartItemCount();
         assertThat(actual)
                 .isEqualTo(expectedCount)
                 .withFailMessage("Cart item count does not match the expected value");

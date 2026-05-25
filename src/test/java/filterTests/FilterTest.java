@@ -1,7 +1,10 @@
 package filterTests;
 
+import model.basket.Product;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -11,17 +14,17 @@ public class FilterTest extends FilterBase {
     @Test
     @DisplayName("Should filter products by price range and restore full count after clearing filters")
     public void shouldFilterProductsByPriceRangeTest() {
-        var productCountBeforeFilter = productFlows
+        int productCountBeforeFilter = productFlows
                 .navigateToCategory(testData.category())
                 .getProductCount();
 
-        var filteredProducts = filterFlows
+        List<Product> filteredProducts = filterFlows
                 .applyPriceFilter(testData.minPrice(), testData.maxPrice())
                 .getProducts();
 
         filterFlows.verifyProductsWithinPriceRange(filteredProducts, testData.minPrice(), testData.maxPrice());
 
-        var productCountAfterClear = filterFlows
+        int productCountAfterClear = filterFlows
                 .clearFilters()
                 .getProductCount();
 

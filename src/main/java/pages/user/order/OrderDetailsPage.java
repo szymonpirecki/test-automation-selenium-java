@@ -53,8 +53,8 @@ public class OrderDetailsPage extends BasePage implements OrderDetailsQueryable 
 
     @Override
     public OrderDetails toOrderDetailsModel() {
-        var orderStatusLines = getOrderStatusLines();
-        var paymentStatus = orderStatusLines.get(orderStatusLines.size() - 1).getPaymentStatus();
+        List<OrderStatusLineComponent> orderStatusLines = getOrderStatusLines();
+        String paymentStatus = orderStatusLines.get(orderStatusLines.size() - 1).getPaymentStatus();
         return OrderDetails.builder()
                 .orderConfirmationTitle(getOrderConfirmationTitle())
                 .paymentStatus(paymentStatus)

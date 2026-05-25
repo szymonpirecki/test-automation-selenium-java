@@ -7,6 +7,7 @@ import flows.product.ProductFlows;
 import flows.user.AccountFlows;
 import flows.user.LoginFlows;
 import model.testdata.CheckoutTestData;
+import model.testdata.Credentials;
 import org.junit.jupiter.api.BeforeEach;
 import providers.TestDataProvider;
 
@@ -22,7 +23,7 @@ public class CheckoutBase extends TestBase {
 
     @BeforeEach
     public void setUpCheckout() {
-        var credentials = testData.credentials();
+        Credentials credentials = testData.credentials();
         if (credentials.email().isBlank() || credentials.password().isBlank()) {
             throw new IllegalStateException(
                     "Checkout test requires credentials. Set TEST_USER_EMAIL and TEST_USER_PASSWORD env vars " +

@@ -68,9 +68,9 @@ public class ProductFlows extends BaseFlows {
     }
 
     private void verifyCategoryPage(String categoryName) {
-        var categoryTitle = at(CategoryPage.class).getCategoryTitle();
-        var productCountLabel = at(CategoryPage.class).getTotalProductCount();
-        var productCount = at(ProductGridPage.class).getProductCount();
+        String categoryTitle = at(CategoryPage.class).getCategoryTitle();
+        int productCountLabel = at(CategoryPage.class).getTotalProductCount();
+        int productCount = at(ProductGridPage.class).getProductCount();
 
         log.debug("Category: {}\nTitle: {}\nLabel count: {}\nDisplayed count: {}",
                 categoryName, categoryTitle, productCountLabel, productCount);

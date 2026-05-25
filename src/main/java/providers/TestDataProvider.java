@@ -3,6 +3,9 @@ package providers;
 import configuration.handler.YamlReader;
 import configuration.model.EnvironmentModel;
 import configuration.model.testconfig.AddressConfig;
+import configuration.model.testconfig.BasketConfig;
+import configuration.model.testconfig.CheckoutConfig;
+import configuration.model.testconfig.FilterConfig;
 import model.testdata.Address;
 import model.testdata.BasketTestData;
 import model.testdata.CheckoutTestData;
@@ -15,32 +18,32 @@ import java.math.BigDecimal;
 public class TestDataProvider {
 
     public static CheckoutTestData checkoutTestData() {
-        var c = currentEnvironment().getCheckoutConfig();
+        CheckoutConfig config = currentEnvironment().getCheckoutConfig();
         return new CheckoutTestData(
                 new Credentials(
-                        resolveEnv("TEST_USER_EMAIL", c.getUser().getEmail()),
-                        resolveEnv("TEST_USER_PASSWORD", c.getUser().getPassword())
+                        resolveEnv("TEST_USER_EMAIL", config.getUser().getEmail()),
+                        resolveEnv("TEST_USER_PASSWORD", config.getUser().getPassword())
                 ),
-                c.getUser().getFirstName(),
-                c.getUser().getLastName(),
-                toAddress(c.getDeliveryAddress()),
-                toAddress(c.getInvoiceAddress()),
-                c.getProduct().getCategory(),
-                c.getProduct().getName(),
-                c.getProduct().getQuantity(),
+                config.getUser().getFirstName(),
+                config.getUser().getLastName(),
+                toAddress(config.getDeliveryAddress()),
+                toAddress(config.getInvoiceAddress()),
+                config.getProduct().getCategory(),
+                config.getProduct().getName(),
+                config.getProduct().getQuantity(),
                 shippingPrice(),
-                c.getPaymentStatus()
+                config.getPaymentStatus()
         );
     }
 
     public static BasketTestData basketTestData() {
-        var c = currentEnvironment().getBasketConfig();
-        return new BasketTestData(c.getCategory(), c.getProductName(), c.getProductQuantity(), shippingPrice());
+        BasketConfig config = currentEnvironment().getBasketConfig();
+        return new BasketTestData(config.getCategory(), config.getProductName(), config.getProductQuantity(), shippingPrice());
     }
 
     public static FilterTestData filterTestData() {
-        var c = currentEnvironment().getFilterConfig();
-        return new FilterTestData(c.getCategory(), c.getMinPrice(), c.getMaxPrice());
+        FilterConfig config = currentEnvironment().getFilterConfig();
+        return new FilterTestData(config.getCategory(), config.getMinPrice(), config.getMaxPrice());
     }
 
     public static SearchTestData searchTestData() {
@@ -52,7 +55,7 @@ public class TestDataProvider {
     }
 
     private static String resolveEnv(String envVar, String fallback) {
-        var value = System.getenv(envVar);
+        String value = System.getenv(envVar);
         return (value != null && !value.isBlank()) ? value : fallback;
     }
 

@@ -1,5 +1,6 @@
 package checkoutTests;
 
+import model.basket.Product;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ public class CheckoutTest extends CheckoutBase {
                 .loginAs(testData.credentials().email(), testData.credentials().password())
                 .cleanUpAddresses();
 
-        var product = productFlows
+        Product product = productFlows
                 .navigateToCategory(testData.productCategory())
                 .findProduct(testData.productName());
 
@@ -22,7 +23,7 @@ public class CheckoutTest extends CheckoutBase {
                 .addProductToBasket(product, testData.productQuantity())
                 .proceedToCheckout();
 
-        var orderNumber = checkoutFlows
+        String orderNumber = checkoutFlows
                 .enterInvoiceAddress(testData.invoiceAddress())
                 .selectDeliveryOption(testData.shippingPrice())
                 .selectPayByCheck()

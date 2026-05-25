@@ -1,6 +1,7 @@
 package basketTests;
 
 import lombok.extern.slf4j.Slf4j;
+import model.basket.Product;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ public class BasketTest extends BasketBase {
     @Test
     @DisplayName("Should add a product to the basket and reflect the correct popup content and cart count")
     public void shouldAddProductToBasketTest() {
-        var product = productFlows
+        Product product = productFlows
                 .navigateToCategory(testData.category())
                 .findProduct(testData.productName());
 
@@ -43,7 +44,7 @@ public class BasketTest extends BasketBase {
                     .addProductToBasket(productFlows.getRandomProduct(), productFlows.getRandomQuantity())
                     .continueShopping();
         }
-        var itemCount = basketFlows
+        int itemCount = basketFlows
                 .navigateToBasket()
                 .getActualBasket().getBasketContent().size();
 

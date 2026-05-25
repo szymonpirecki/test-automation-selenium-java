@@ -1,6 +1,6 @@
 # Selenium Test Automation Framework (Java)
 
-End-to-end test automation framework for a PrestaShop e-commerce application, built with Selenium WebDriver and JUnit 5.
+End-to-end test automation framework for a PrestaShop e-commerce application, built with Selenium WebDriver, JUnit 5, and a three-layer Page Object + Flows architecture.
 
 ## Tech Stack
 
@@ -8,52 +8,95 @@ End-to-end test automation framework for a PrestaShop e-commerce application, bu
 |------|---------|---------|
 | Java | 17 | Language |
 | Selenium WebDriver | 4.21 | Browser automation |
-| JUnit 5 | 5.11.3 | Test runner |
-| AssertJ | 3.26.3 | Fluent assertions |
+| JUnit 5 | 5.11.3 | Test runner & parallel execution |
+| AssertJ | 3.26.3 | Fluent assertions with recursive comparison |
 | Lombok | 1.18.34 | Boilerplate reduction |
-| Logback | 1.5.12 | Logging |
-| SnakeYAML / Jackson | 2.3 / 2.18 | Config parsing |
+| Logback | 1.5.12 | Structured logging |
+| SnakeYAML / Jackson | 2.3 / 2.18 | YAML config parsing |
 | Java Faker | 1.0.2 | Test data generation |
-| Maven | 3.x | Build tool |
+| Maven Surefire | 3.5.1 | Build & parallel test execution |
 
-> Driver management is handled automatically by Selenium Manager (built into Selenium 4.6+).
+> Driver management is handled automatically by Selenium Manager (built into Selenium 4.6+). No manual chromedriver download needed.
+
+---
 
 ## Architecture
 
 ```
 src/main/java
-├── configuration/       # YAML config loading, browser & environment setup
-├── model/               # Domain model (Basket, BasketLine, Product, Order, User)
-├── pages/               # Page Object Model — one class per page/component
-│   ├── base/            # BasePage with shared waits and helpers
-│   ├── basket/
-│   ├── checkout/
-│   ├── product/
-│   └── user/
-├── flows/               # User flow layer — fluent API wrapping page interactions + assertions
-│   ├── base/            # BaseFlows with page factory helper
-│   ├── basket/
-│   ├── checkout/
-│   ├── product/
-│   └── user/
-├── providers/           # URL constants
-└── utils/               # Data generation (UserFactory)
+├── configuration/
+│   ├── handler/         # BrowserHandler, DriverManager (ThreadLocal), EnvironmentHandler, YamlReader
+│   ├── model/           # YamlModel + per-suite config POJOs (CheckoutConfig, BasketConfig, …)
+│   └── assertJConfig/   # Custom AssertJ RecursiveComparisonConfiguration (BigDecimal precision)
+│
+├── model/
+│   ├── basket/          # Basket, BasketLine, BasketPopUp + Queryable interfaces
+│   ├── order/           # OrderDetails + Queryable interface
+│   ├── testdata/        # Test input models (Credentials, Address, CheckoutTestData, …)
+│   └── user/            # User, SocialTitle
+│
+├── pages/
+│   ├── base/            # BasePage — explicit waits, sendKeys, BigDecimal parsing, select helpers
+│   ├── basket/          # BasketPage, BasketPopUpPage, BasketLineComponent
+│   ├── checkout/        # CheckoutAddressPage, CheckoutShippingPage, CheckoutPaymentPage,
+│   │                    # OrderConfirmationPage, DeliveryOptionComponent
+│   ├── home/            # HeaderPage
+│   ├── login/           # LogInPage
+│   ├── product/         # CategoryPage, ProductGridPage, ProductPage,
+│   │                    # ProductFilterPage, ProductMiniatureComponent
+│   └── user/            # AccountPage, AddressPage, OrderHistoryPage,
+│                        # OrderDetailsPage, OrderLineComponent, OrderStatusLineComponent
+│
+├── flows/
+│   ├── base/            # BaseFlows — page factory helper (at()), random helpers
+│   ├── basket/          # BasketFlows
+│   ├── checkout/        # CheckoutFlows
+│   ├── product/         # ProductFlows, FilterFlows, SearchFlows
+│   └── user/            # LoginFlows, AccountFlows
+│
+├── providers/           # UrlProvider, TestDataProvider
+└── utils/
+    ├── ScreenshotUtil   # Auto-capture screenshot + page source on failure
+    └── dataGeneration/  # UserFactory (Java Faker)
 
 src/test/java
-├── base/                # TestBase — driver lifecycle (@BeforeEach / @AfterEach)
-├── basketTests/
-├── categoryTests/
-├── checkoutTests/
-├── filterTests/
-└── searchTests/
+├── base/                # TestBase — @BeforeEach driver init, @AfterEach quit, JUnit5 TestWatcher
+├── basketTests/         # BasketBase + BasketTest
+├── categoryTests/       # CategoryBase + CategoryTest
+├── checkoutTests/       # CheckoutBase + CheckoutTest
+├── filterTests/         # FilterBase + FilterTest
+└── searchTests/         # SearchBase + SearchTest
 ```
 
-The framework uses a three-layer design:
-- **Pages** — WebElement locators and low-level browser interactions
-- **Flows** — business-level user flows and assertions, returning `this` for fluent chaining
-- **Tests** — readable, scenario-style test methods composing flows
+### Design patterns
 
-Domain models (e.g. `Basket`, `BasketLine`) are built from page state and compared with AssertJ's `usingRecursiveComparison`, so tests verify business data rather than raw HTML.
+**Three-layer architecture**
+
+| Layer | Responsibility |
+|-------|---------------|
+| **Pages** | WebElement locators and raw browser interactions. No assertions, no business logic. |
+| **Flows** | Business-level user journeys. Return `this` for fluent chaining. Contain AssertJ assertions. |
+| **Tests** | Readable, scenario-style methods composing flows. No direct WebDriver usage. |
+
+**Domain model assertions** — page state is mapped into domain objects (`Basket`, `BasketLine`, `OrderDetails`) which are then compared with AssertJ `usingRecursiveComparison()`. Tests verify business data rather than raw element text.
+
+**Thread-safe driver** — `DriverManager` wraps `WebDriver` in a `ThreadLocal`, enabling safe parallel test execution with Maven Surefire `forkCount`.
+
+**YAML-first configuration** — all environment URLs, test data, and browser settings live in `configFile.yaml`. CLI `-D` flags override YAML values, so the same config works locally and in CI without code changes.
+
+---
+
+## Test Suites
+
+| Suite | Tests | What is verified |
+|-------|-------|-----------------|
+| `BasketTest` | 3 | Add a single product (popup content + cart counter); add 10 random products and verify full basket state; remove items one by one and verify running total |
+| `CheckoutTest` | 1 | Full purchase flow: login → navigate category → add product → checkout with invoice address → verify order in account history |
+| `CategoryTest` | 2 | Title, product count and filter panel for every top-level category; same checks for all subcategories |
+| `FilterTest` | 1 | Apply price range filter, assert all results are within bounds, clear filter, assert full count restored |
+| `SearchTest` | 2 | Search by a randomly selected product name, assert all results match; type a keyword and assert autocomplete suggestions |
+
+---
 
 ## Running Tests
 
@@ -61,7 +104,7 @@ Domain models (e.g. `Basket`, `BasketLine`) are built from page state and compar
 
 - Java 17+
 - Maven 3.6+
-- Chrome / Firefox / Edge installed
+- Chrome, Firefox, or Edge installed locally
 
 ### Run all tests
 
@@ -69,47 +112,105 @@ Domain models (e.g. `Basket`, `BasketLine`) are built from page state and compar
 mvn test
 ```
 
-### Run a specific test class
+### Run a single suite
 
 ```bash
 mvn test -Dtest=BasketTest
 ```
 
-### Change browser
+### Override browser settings via CLI
 
-Edit `src/main/resources/configFile.yaml`:
+Any browser property defined in `configFile.yaml` can be overridden with a `-D` flag:
 
-```yaml
-browserSettings:
-  browserName: firefox   # chrome | firefox | edge
-  browserHeadless: true
+```bash
+# Run headless on Firefox
+mvn test -DbrowserName=firefox -DbrowserHeadless=true
+
+# Run with a longer explicit wait (e.g., slow environment)
+mvn test -DexplicitWaitTimeout=20
 ```
 
-### Change environment
+### Parallel execution
 
-The `configFile.yaml` `environment` key selects which block under `environments:` is loaded. Currently `test` points to a hosted PrestaShop instance.
+Fork count is set to `2` in `pom.xml` (Maven Surefire). To increase parallelism:
 
-## Test Suites
+```bash
+mvn test -DforkCount=4
+```
 
-| Suite | Description |
-|-------|-------------|
-| `BasketTest` | Add products, verify basket contents and counter, remove items |
-| `CheckoutTest` | Full purchase flow: login → product → basket → checkout → order verification |
-| `CategoryTest` | Category headers, product counts, filter panel presence, subcategory navigation |
-| `FilterTest` | Price range filter applied and cleared, results within bounds |
-| `SearchTest` | Search by keyword, autocomplete suggestions |
+---
 
 ## Configuration
 
-All test parameters are defined in `src/main/resources/configFile.yaml` and loaded as `System.properties` at runtime. Nested YAML keys are flattened with `-` as separator (e.g. `checkoutTests-user-email`).
+All test parameters are defined in `src/main/resources/configFile.yaml`.
+
+```yaml
+environment: test         # selects which block under `environments:` is active
+
+browserSettings:
+  browserName: chrome     # chrome | firefox | edge
+  browserHeadless: false
+  maximizeWindow: true
+
+environments:
+  test:
+    urls:
+      home: http://...
+    explicitWaitTimeout: 10
+    shippingPrice: 7
+    market: US
+    currency: $
+    searchTests:
+      keyword: HUMMINGBIRD
+    filterTests:
+      minPrice: 13
+      maxPrice: 15
+      category: ACCESSORIES
+    basketTests:
+      category: ART
+      productName: THE BEST IS YET POSTER
+      productQuantity: 3
+    checkoutTests:
+      ...
+```
 
 ### Credentials
 
-Test account credentials are **not stored in the repository**. Supply them via environment variables before running:
+Test account credentials are **not stored in the repository**. Supply them as environment variables before running checkout tests:
 
 ```bash
 export TEST_USER_EMAIL=your.test.user@example.com
 export TEST_USER_PASSWORD=your_password
 ```
 
-See `.env.example` for the full list. In CI these are injected as repository secrets (see `.github/workflows/ci.yml`).
+See `.env.example` for the full template. If the variables are missing, `CheckoutBase` fails fast with a descriptive error before the browser even opens.
+
+---
+
+## Failure Artifacts
+
+On test failure, `TestBase` automatically captures:
+
+- **Screenshot** → `target/screenshots/<testName>_FAILED_<timestamp>.png`
+- **Page source** → `target/page-sources/<testName>_FAILED_<timestamp>.html`
+
+Both paths are uploaded as CI artifacts (see `.github/workflows/ci.yml`) and retained for 7 days.
+
+---
+
+## CI/CD (GitHub Actions)
+
+The pipeline runs on every push and pull request to `master`.
+
+```
+Checkout → Java 17 setup → Install Chrome → Run tests (headless) → Upload artifacts
+```
+
+Secrets required in the repository:
+
+| Secret | Description |
+|--------|-------------|
+| `TEST_USER_EMAIL` | Test account e-mail |
+| `TEST_USER_PASSWORD` | Test account password |
+
+Surefire XML reports, screenshots, and page sources are uploaded as separate artifacts on every run.

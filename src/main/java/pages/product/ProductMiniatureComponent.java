@@ -2,7 +2,6 @@ package pages.product;
 
 import model.basket.Product;
 import model.basket.ProductQueryable;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
@@ -11,8 +10,8 @@ import java.math.BigDecimal;
 
 public class ProductMiniatureComponent extends BasePage implements ProductQueryable {
 
-    public ProductMiniatureComponent(WebDriver driver, WebElement parent) {
-        super(driver, parent);
+    public ProductMiniatureComponent(WebElement parent) {
+        super(parent);
     }
 
     @FindBy(css = ".thumbnail")

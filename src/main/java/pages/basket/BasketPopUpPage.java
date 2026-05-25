@@ -3,7 +3,6 @@ package pages.basket;
 import lombok.Getter;
 import model.basket.BasketPopUp;
 import model.basket.BasketPopUpQueryable;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
@@ -12,11 +11,6 @@ import java.math.BigDecimal;
 
 @Getter
 public class BasketPopUpPage extends BasePage implements BasketPopUpQueryable {
-
-
-    public BasketPopUpPage(WebDriver driver) {
-        super(driver);
-    }
 
     @FindBy(css = "#myModalLabel")
     private WebElement popupTitle;

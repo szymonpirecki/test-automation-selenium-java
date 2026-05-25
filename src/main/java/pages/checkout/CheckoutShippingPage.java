@@ -1,6 +1,5 @@
 package pages.checkout;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
@@ -10,9 +9,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class CheckoutShippingPage extends BasePage {
-    public CheckoutShippingPage(WebDriver driver) {
-        super(driver);
-    }
 
     @FindBy(css = ".delivery-option")
     private List<WebElement> deliveryOptions;
@@ -35,7 +31,7 @@ public class CheckoutShippingPage extends BasePage {
     private List<DeliveryOptionComponent> getDeliveryOptions() {
         waitForAllElements(deliveryOptions);
         return deliveryOptions.stream()
-                .map(o -> new DeliveryOptionComponent(driver, o))
+                .map(DeliveryOptionComponent::new)
                 .toList();
     }
 }

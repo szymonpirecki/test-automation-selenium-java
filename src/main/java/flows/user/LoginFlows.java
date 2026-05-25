@@ -1,14 +1,10 @@
 package flows.user;
 
 import flows.base.BaseFlows;
-import org.openqa.selenium.WebDriver;
 import pages.login.LogInPage;
 import providers.UrlProvider;
 
 public class LoginFlows extends BaseFlows {
-    public LoginFlows(WebDriver driver) {
-        super(driver);
-    }
 
     public LoginFlows navigateToLoginPage() {
         driver.get(UrlProvider.LOGIN_URL.getUrl());
@@ -17,6 +13,6 @@ public class LoginFlows extends BaseFlows {
 
     public AccountFlows loginAs(String email, String password) {
         at(LogInPage.class).logIn(email, password);
-        return new AccountFlows(driver);
+        return new AccountFlows();
     }
 }

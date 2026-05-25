@@ -18,7 +18,7 @@ public class FilterBase extends TestBase {
 
     @BeforeEach
     public void init() {
-        filterFlows = new FilterFlows(driver);
-        productFlows = new ProductFlows(driver);
+        filterFlows = new FilterFlows();
+        productFlows = new ProductFlows();
     }
 }

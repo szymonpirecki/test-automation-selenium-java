@@ -1,13 +1,12 @@
 package pages.user.order;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
 
 public class OrderStatusLineComponent extends BasePage {
-    public OrderStatusLineComponent(WebDriver driver, WebElement parent) {
-        super(driver, parent);
+    public OrderStatusLineComponent(WebElement parent) {
+        super(parent);
     }
 
     @FindBy(xpath = "./td[1]")

@@ -12,6 +12,6 @@ public class CategoryBase extends TestBase {
 
     @BeforeEach
     public void init() {
-        categoryFlows = new ProductFlows(driver);
+        categoryFlows = new ProductFlows();
     }
 }

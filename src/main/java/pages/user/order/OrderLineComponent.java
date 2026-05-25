@@ -1,14 +1,13 @@
 package pages.user.order;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
 
 public class OrderLineComponent extends BasePage {
 
-    public OrderLineComponent(WebDriver driver, WebElement parent) {
-        super(driver, parent);
+    public OrderLineComponent(WebElement parent) {
+        super(parent);
     }
 
     @FindBy(css = "th")

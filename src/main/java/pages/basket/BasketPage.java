@@ -5,7 +5,6 @@ import model.basket.Basket;
 import model.basket.BasketLine;
 import model.basket.BasketQueryable;
 import model.basket.Product;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
@@ -16,9 +15,6 @@ import java.util.NoSuchElementException;
 
 @Slf4j
 public class BasketPage extends BasePage implements BasketQueryable {
-    public BasketPage(WebDriver driver) {
-        super(driver);
-    }
 
     @FindBy(css = ".cart-item")
     private List<WebElement> basketLines;
@@ -40,7 +36,7 @@ public class BasketPage extends BasePage implements BasketQueryable {
 
     public List<BasketLineComponent> getBasketLineComponents() {
         return basketLines.stream()
-                .map(bl -> new BasketLineComponent(driver, bl))
+                .map(BasketLineComponent::new)
                 .toList();
     }
 

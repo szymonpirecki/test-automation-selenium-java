@@ -3,7 +3,6 @@ package flows.product;
 import flows.base.BaseFlows;
 import lombok.extern.slf4j.Slf4j;
 import model.basket.Product;
-import org.openqa.selenium.WebDriver;
 import pages.home.HeaderPage;
 import pages.product.CategoryPage;
 import pages.product.ProductFilterPage;
@@ -15,9 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 public class ProductFlows extends BaseFlows {
-    public ProductFlows(WebDriver driver) {
-        super(driver);
-    }
 
     public Product findProduct(String productName) {
         return at(ProductGridPage.class).findProduct(productName);

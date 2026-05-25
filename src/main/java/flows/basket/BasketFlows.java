@@ -7,7 +7,6 @@ import model.basket.Basket;
 import model.basket.BasketLine;
 import model.basket.BasketPopUp;
 import model.basket.Product;
-import org.openqa.selenium.WebDriver;
 import pages.basket.BasketPage;
 import pages.basket.BasketPopUpPage;
 import pages.home.HeaderPage;
@@ -23,10 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BasketFlows extends BaseFlows {
 
     private final Basket expectedBasket = new Basket();
-
-    public BasketFlows(WebDriver driver) {
-        super(driver);
-    }
 
     public Basket getActualBasket() {
         navigateToBasket();

@@ -1,6 +1,5 @@
 package pages.checkout;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
@@ -8,8 +7,8 @@ import pages.base.BasePage;
 import java.math.BigDecimal;
 
 public class DeliveryOptionComponent extends BasePage {
-    public DeliveryOptionComponent(WebDriver driver, WebElement parent) {
-        super(driver, parent);
+    public DeliveryOptionComponent(WebElement parent) {
+        super(parent);
     }
 
     @FindBy(css = ".carrier-price")

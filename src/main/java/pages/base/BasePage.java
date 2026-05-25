@@ -1,5 +1,6 @@
 package pages.base;
 
+import configuration.handler.DriverManager;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
@@ -24,13 +25,13 @@ public class BasePage {
     protected WebDriverWait defaultWait;
     protected Actions actions;
 
-    public BasePage(WebDriver driver) {
-        init(driver);
-        PageFactory.initElements(driver, this);
+    public BasePage() {
+        init(DriverManager.getDriver());
+        PageFactory.initElements(this.driver, this);
     }
 
-    public BasePage(WebDriver driver, WebElement parent) {
-        init(driver);
+    public BasePage(WebElement parent) {
+        init(DriverManager.getDriver());
         PageFactory.initElements(new DefaultElementLocatorFactory(parent), this);
     }
 

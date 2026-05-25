@@ -3,7 +3,6 @@ package flows.product;
 import flows.base.BaseFlows;
 import lombok.extern.slf4j.Slf4j;
 import model.basket.Product;
-import org.openqa.selenium.WebDriver;
 import pages.product.ProductFilterPage;
 
 import java.math.BigDecimal;
@@ -14,13 +13,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 public class FilterFlows extends BaseFlows {
 
-    public FilterFlows(WebDriver driver) {
-        super(driver);
-    }
-
     public ProductFlows clearFilters() {
         at(ProductFilterPage.class).clearAllFilters();
-        return new ProductFlows(driver);
+        return new ProductFlows();
     }
 
     public ProductFlows applyPriceFilter(BigDecimal minPrice, BigDecimal maxPrice) {
@@ -28,7 +23,7 @@ public class FilterFlows extends BaseFlows {
             filterPage.adjustSliderHandle(ProductFilterPage.SliderType.LEFT, filterPage.getCurrentMinPrice(), minPrice);
             filterPage.adjustSliderHandle(ProductFilterPage.SliderType.RIGHT, filterPage.getCurrentMaxPrice(), maxPrice);
         });
-        return new ProductFlows(driver);
+        return new ProductFlows();
     }
 
     // Assertions

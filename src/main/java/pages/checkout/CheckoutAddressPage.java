@@ -1,17 +1,12 @@
 package pages.checkout;
 
 import lombok.Getter;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
 
 @Getter
 public class CheckoutAddressPage extends BasePage {
-
-    public CheckoutAddressPage(WebDriver driver) {
-        super(driver);
-    }
 
     @FindBy(css = "a[data-link-action='different-invoice-address']")
     WebElement differentInvoiceAddressLink;

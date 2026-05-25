@@ -22,10 +22,10 @@ public class CheckoutBase extends TestBase {
 
     @BeforeEach
     public void setUpCheckout() {
-        loginFlows = new LoginFlows(driver);
-        productFlows = new ProductFlows(driver);
-        accountFlows = new AccountFlows(driver);
-        basketFlows = new BasketFlows(driver);
-        checkoutFlows = new CheckoutFlows(driver);
+        loginFlows = new LoginFlows();
+        productFlows = new ProductFlows();
+        accountFlows = new AccountFlows();
+        basketFlows = new BasketFlows();
+        checkoutFlows = new CheckoutFlows();
     }
 }

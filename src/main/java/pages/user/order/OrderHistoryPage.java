@@ -1,6 +1,5 @@
 package pages.user.order;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
@@ -10,9 +9,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class OrderHistoryPage extends BasePage {
-    public OrderHistoryPage(WebDriver driver) {
-        super(driver);
-    }
 
     @FindBy(css = "tbody tr")
     private List<WebElement> userOrders;
@@ -28,7 +24,7 @@ public class OrderHistoryPage extends BasePage {
     private List<OrderLineComponent> getOrderLines() {
         List<OrderLineComponent> rows = new ArrayList<>();
         for (WebElement row : userOrders) {
-            rows.add(new OrderLineComponent(driver, row));
+            rows.add(new OrderLineComponent(row));
         }
         return rows;
     }

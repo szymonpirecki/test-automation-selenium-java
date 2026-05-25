@@ -1,6 +1,5 @@
 package pages.product;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
@@ -9,9 +8,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class CategoryPage extends BasePage {
-    public CategoryPage(WebDriver driver) {
-        super(driver);
-    }
 
     @FindBy(css = ".block-category ")
     private WebElement categoryCardBlock;

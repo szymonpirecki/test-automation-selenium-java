@@ -1,6 +1,5 @@
 package pages.home;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -10,10 +9,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class HeaderPage extends BasePage {
-
-    public HeaderPage(WebDriver driver) {
-        super(driver);
-    }
 
     @FindBy(css = ".account")
     private WebElement userAccountLink;

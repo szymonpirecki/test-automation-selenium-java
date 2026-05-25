@@ -1,6 +1,5 @@
 package pages.user.address;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
@@ -8,10 +7,6 @@ import pages.base.BasePage;
 import java.util.List;
 
 public class AddressPage extends BasePage {
-
-    public AddressPage(WebDriver driver) {
-        super(driver);
-    }
 
     @FindBy(css = ".address")
     private List<WebElement> userAddressesContainers;
@@ -25,7 +20,7 @@ public class AddressPage extends BasePage {
     private List<AddressContainerComponent> getAddressContainers() {
         waitForAllElements(userAddressesContainers);
         return userAddressesContainers.stream()
-                .map(ac -> new AddressContainerComponent(driver, ac))
+                .map(AddressContainerComponent::new)
                 .toList();
     }
 }

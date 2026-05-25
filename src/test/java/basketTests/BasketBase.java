@@ -16,7 +16,7 @@ public class BasketBase extends TestBase {
 
     @BeforeEach
     public void setUpBasket() {
-        productFlows = new ProductFlows(driver);
-        basketFlows = new BasketFlows(driver);
+        productFlows = new ProductFlows();
+        basketFlows = new BasketFlows();
     }
 }

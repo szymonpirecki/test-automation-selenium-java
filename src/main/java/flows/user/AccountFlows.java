@@ -3,7 +3,6 @@ package flows.user;
 import flows.base.BaseFlows;
 import model.order.OrderDetails;
 import org.assertj.core.api.SoftAssertions;
-import org.openqa.selenium.WebDriver;
 import pages.home.HeaderPage;
 import pages.user.account.AccountPage;
 import pages.user.address.AddressPage;
@@ -20,10 +19,6 @@ import java.util.regex.Pattern;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AccountFlows extends BaseFlows {
-
-    public AccountFlows(WebDriver driver) {
-        super(driver);
-    }
 
     public void cleanUpAddresses() {
         navigateToAddresses();

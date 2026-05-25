@@ -16,7 +16,7 @@ public class SearchBase extends TestBase {
 
     @BeforeEach
     public void init() {
-        searchFlows = new SearchFlows(driver);
-        productFlows = new ProductFlows(driver);
+        searchFlows = new SearchFlows();
+        productFlows = new ProductFlows();
     }
 }

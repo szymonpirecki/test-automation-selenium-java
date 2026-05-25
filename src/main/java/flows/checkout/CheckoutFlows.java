@@ -2,7 +2,6 @@ package flows.checkout;
 
 import flows.base.BaseFlows;
 import model.testdata.Address;
-import org.openqa.selenium.WebDriver;
 import pages.checkout.CheckoutAddressPage;
 import pages.checkout.CheckoutPaymentPage;
 import pages.checkout.CheckoutShippingPage;
@@ -11,9 +10,6 @@ import pages.checkout.OrderConfirmationPage;
 import java.math.BigDecimal;
 
 public class CheckoutFlows extends BaseFlows {
-    public CheckoutFlows(WebDriver driver) {
-        super(driver);
-    }
 
     public CheckoutFlows enterInvoiceAddress(Address invoiceAddress) {
         at(CheckoutAddressPage.class, page -> {

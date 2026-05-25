@@ -2,7 +2,6 @@ package pages.product;
 
 import lombok.extern.slf4j.Slf4j;
 import model.basket.Product;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
@@ -12,21 +11,18 @@ import java.util.NoSuchElementException;
 
 @Slf4j
 public class ProductGridPage extends BasePage {
-    public ProductGridPage(WebDriver driver) {
-        super(driver);
-        waitForAllElements(productsOnGrid);
-    }
 
     @FindBy(css = ".product")
     private List<WebElement> productsOnGrid;
 
     public int getProductCount() {
-        return productsOnGrid.size();
+        return getProductCards().size();
     }
 
     public List<ProductMiniatureComponent> getProductCards() {
+        waitForAllElements(productsOnGrid);
         return productsOnGrid.stream()
-                .map(p -> new ProductMiniatureComponent(driver, p))
+                .map(ProductMiniatureComponent::new)
                 .toList();
     }
 

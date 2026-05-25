@@ -3,7 +3,6 @@ package pages.basket;
 import model.basket.BasketLine;
 import model.basket.BasketLineQueryable;
 import model.basket.Product;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -12,8 +11,8 @@ import pages.base.BasePage;
 import java.math.BigDecimal;
 
 public class BasketLineComponent extends BasePage implements BasketLineQueryable {
-    public BasketLineComponent(WebDriver driver, WebElement parent) {
-        super(driver, parent);
+    public BasketLineComponent(WebElement parent) {
+        super(parent);
     }
 
     @FindBy(css = ".product-line-info a.label")

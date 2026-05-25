@@ -27,7 +27,11 @@ public class EnvironmentHandler {
                 log.error("{} = null. Value can't be null", key);
                 throw new RuntimeException("Value for key " + key + " cannot be null.");
             } else if (value instanceof String || value instanceof Boolean || value instanceof Number) {
-                System.setProperty(key, value.toString());
+                if (System.getProperty(key) == null) {
+                    System.setProperty(key, value.toString());
+                } else {
+                    log.debug("Environment property '{}' already set via CLI — skipping YAML value '{}'", key, value);
+                }
             } else if (value instanceof Map<?, ?>) {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> innerMap = (Map<String, Object>) value;

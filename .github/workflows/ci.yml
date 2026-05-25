@@ -37,3 +37,19 @@ jobs:
           name: surefire-reports
           path: target/surefire-reports/
           retention-days: 7
+
+      - name: Upload screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-screenshots
+          path: target/screenshots/
+          retention-days: 7
+
+      - name: Upload page sources
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-page-sources
+          path: target/page-sources/
+          retention-days: 7

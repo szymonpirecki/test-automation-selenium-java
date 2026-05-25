@@ -25,6 +25,10 @@ public class DriverManager {
         return driver;
     }
 
+    public static WebDriver getDriverOrNull() {
+        return driverHolder.get();
+    }
+
     public static void quit() {
         WebDriver driver = driverHolder.get();
         if (driver != null) {

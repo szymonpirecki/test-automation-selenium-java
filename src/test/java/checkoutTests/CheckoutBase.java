@@ -22,6 +22,13 @@ public class CheckoutBase extends TestBase {
 
     @BeforeEach
     public void setUpCheckout() {
+        var credentials = testData.credentials();
+        if (credentials.email().isBlank() || credentials.password().isBlank()) {
+            throw new IllegalStateException(
+                    "Checkout test requires credentials. Set TEST_USER_EMAIL and TEST_USER_PASSWORD env vars " +
+                    "(or GitHub Actions secrets). Current values — email blank: " + credentials.email().isBlank() +
+                    ", password blank: " + credentials.password().isBlank());
+        }
         loginFlows = new LoginFlows();
         productFlows = new ProductFlows();
         accountFlows = new AccountFlows();

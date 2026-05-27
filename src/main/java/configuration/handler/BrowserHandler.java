@@ -6,8 +6,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
@@ -46,7 +44,6 @@ public class BrowserHandler {
         WebDriver driver = null;
         log.info("Initializing driver with browserName: {}", this.browserName);
         switch (this.browserName.toLowerCase()) {
-            case "edge" -> driver = getEdgeDriver();
             case "firefox" -> driver = getFirefoxDriver();
             default -> driver = getChromeDriver();
         }
@@ -84,13 +81,6 @@ public class BrowserHandler {
         log.debug("Setting headless option to {}", this.browserHeadless);
         if (this.browserHeadless) options.addArguments("--headless");
         return new FirefoxDriver(options);
-    }
-
-    private WebDriver getEdgeDriver() {
-        EdgeOptions options = new EdgeOptions();
-        log.debug("Setting headless option to {}", this.browserHeadless);
-        if (this.browserHeadless) options.addArguments("--headless");
-        return new EdgeDriver(options);
     }
 
     // The snap launcher symlink (/snap/bin/chromium.chromedriver) cannot be spawned

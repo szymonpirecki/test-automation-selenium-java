@@ -1,8 +1,8 @@
 package filterTests;
 
 import base.TestBase;
-import flows.product.FilterFlows;
-import flows.product.ProductFlows;
+import steps.product.FilterSteps;
+import steps.product.ProductSteps;
 import lombok.extern.slf4j.Slf4j;
 import model.testdata.FilterTestData;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,12 +13,12 @@ public class FilterBase extends TestBase {
 
     protected final FilterTestData testData = TestDataProvider.filterTestData();
 
-    FilterFlows filterFlows;
-    ProductFlows productFlows;
+    FilterSteps filterSteps;
+    ProductSteps productSteps;
 
     @BeforeEach
     public void init() {
-        filterFlows = new FilterFlows();
-        productFlows = new ProductFlows();
+        filterSteps = new FilterSteps();
+        productSteps = new ProductSteps();
     }
 }

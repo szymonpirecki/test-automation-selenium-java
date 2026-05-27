@@ -1,6 +1,6 @@
 # Selenium Test Automation Framework (Java)
 
-End-to-end test automation framework for a PrestaShop e-commerce application, built with Selenium WebDriver, JUnit 5, and a three-layer Page Object + Flows architecture.
+End-to-end test automation framework for a PrestaShop e-commerce application, built with Selenium WebDriver, JUnit 5, and a three-layer Page Object + Steps architecture.
 
 ## Tech Stack
 
@@ -47,12 +47,12 @@ src/main/java
 │   └── user/            # AccountPage, AddressPage, OrderHistoryPage,
 │                        # OrderDetailsPage, OrderLineComponent, OrderStatusLineComponent
 │
-├── flows/
-│   ├── base/            # BaseFlows — page factory helper (at()), random helpers
-│   ├── basket/          # BasketFlows
-│   ├── checkout/        # CheckoutFlows
-│   ├── product/         # ProductFlows, FilterFlows, SearchFlows
-│   └── user/            # LoginFlows, AccountFlows
+├── steps/
+│   ├── base/            # BaseSteps — page factory helper (at()), random helpers
+│   ├── basket/          # BasketSteps
+│   ├── checkout/        # CheckoutSteps
+│   ├── product/         # ProductSteps, FilterSteps, SearchSteps
+│   └── user/            # LoginSteps, AccountSteps
 │
 ├── providers/           # UrlProvider, TestDataProvider
 └── utils/
@@ -75,8 +75,8 @@ src/test/java
 | Layer | Responsibility |
 |-------|---------------|
 | **Pages** | WebElement locators and raw browser interactions. No assertions, no business logic. |
-| **Flows** | Business-level user journeys. Return `this` for fluent chaining. Contain AssertJ assertions. |
-| **Tests** | Readable, scenario-style methods composing flows. No direct WebDriver usage. |
+| **Steps** | Business-level user journeys. Return `this` for fluent chaining. Contain AssertJ assertions. |
+| **Tests** | Readable, scenario-style methods composing steps. No direct WebDriver usage. |
 
 **Domain model assertions** — page state is mapped into domain objects (`Basket`, `BasketLine`, `OrderDetails`) which are then compared with AssertJ `usingRecursiveComparison()`. Tests verify business data rather than raw element text.
 

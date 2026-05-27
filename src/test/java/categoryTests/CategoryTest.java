@@ -15,22 +15,22 @@ public class CategoryTest extends CategoryBase {
     @Test
     @DisplayName("Should display correct title, product count, and filter panel for each top-level category")
     public void shouldValidateCategoryDetailsTest() {
-        List<String> categoryNames = categoryFlows.getCategoryNames();
+        List<String> categoryNames = categorySteps.getCategoryNames();
         assertThat(categoryNames).withFailMessage("Couldn't get category names.").isNotEmpty();
 
         for (String category : categoryNames) {
-            categoryFlows.verifyCategoryDetails(category);
+            categorySteps.verifyCategoryDetails(category);
         }
     }
 
     @Test
     @DisplayName("Should display correct details for each subcategory within all top-level categories")
     public void shouldValidateSubCategoryDetailsTest() {
-        List<String> categoryNames = categoryFlows.getCategoryNames();
+        List<String> categoryNames = categorySteps.getCategoryNames();
         assertThat(categoryNames).withFailMessage("Couldn't get category names.").isNotEmpty();
 
         for (String category : categoryNames) {
-            categoryFlows.verifySubCategoryDetails(category);
+            categorySteps.verifySubCategoryDetails(category);
         }
     }
 }

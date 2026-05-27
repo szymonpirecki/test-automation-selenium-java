@@ -1,8 +1,8 @@
 package basketTests;
 
 import base.TestBase;
-import flows.basket.BasketFlows;
-import flows.product.ProductFlows;
+import steps.basket.BasketSteps;
+import steps.product.ProductSteps;
 import model.testdata.BasketTestData;
 import org.junit.jupiter.api.BeforeEach;
 import providers.TestDataProvider;
@@ -11,12 +11,12 @@ public class BasketBase extends TestBase {
 
     protected final BasketTestData testData = TestDataProvider.basketTestData();
 
-    BasketFlows basketFlows;
-    ProductFlows productFlows;
+    BasketSteps basketSteps;
+    ProductSteps productSteps;
 
     @BeforeEach
     public void setUpBasket() {
-        productFlows = new ProductFlows();
-        basketFlows = new BasketFlows();
+        productSteps = new ProductSteps();
+        basketSteps = new BasketSteps();
     }
 }

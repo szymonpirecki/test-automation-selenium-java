@@ -1,7 +1,7 @@
-package flows.basket;
+package steps.basket;
 
 import configuration.assertJConfig.AssertJConfigHelper;
-import flows.base.BaseFlows;
+import steps.base.BaseSteps;
 import lombok.Getter;
 import model.basket.Basket;
 import model.basket.BasketLine;
@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Getter
-public class BasketFlows extends BaseFlows {
+public class BasketSteps extends BaseSteps {
 
     private final Basket expectedBasket = new Basket();
 
@@ -28,12 +28,12 @@ public class BasketFlows extends BaseFlows {
         return at(BasketPage.class).toBasketModel();
     }
 
-    public BasketFlows navigateToBasket() {
+    public BasketSteps navigateToBasket() {
         driver.get(UrlProvider.BASKET_URL.getUrl());
         return this;
     }
 
-    public BasketFlows addProductToBasket(Product product, int quantity) {
+    public BasketSteps addProductToBasket(Product product, int quantity) {
         at(ProductGridPage.class).openProduct(product.getName());
         at(ProductPage.class)
                 .setQuantity(quantity)
@@ -42,7 +42,7 @@ public class BasketFlows extends BaseFlows {
         return this;
     }
 
-    public BasketFlows closeCartPopup() {
+    public BasketSteps closeCartPopup() {
         at(BasketPopUpPage.class).continueShopping();
         return this;
     }
@@ -57,7 +57,7 @@ public class BasketFlows extends BaseFlows {
         at(BasketPage.class).proceedToCheckout();
     }
 
-    public BasketFlows removeFirstItem() {
+    public BasketSteps removeFirstItem() {
         navigateToBasket();
         BasketLine firstLine = at(BasketPage.class).getFirstCartLine();
         expectedBasket.removeFromBasket(firstLine);
@@ -66,7 +66,7 @@ public class BasketFlows extends BaseFlows {
     }
 
     // Assertions
-    public BasketFlows verifyCartPopUpContent(Product product, int quantity, BigDecimal shippingPrice) {
+    public BasketSteps verifyCartPopUpContent(Product product, int quantity, BigDecimal shippingPrice) {
         at(BasketPopUpPage.class, p -> {
             BasketPopUp actual = p.toBasketPopUpModel();
             BasketPopUp expected = BasketPopUp.createExpectedPopUpContent(expectedBasket, product, quantity, shippingPrice);
@@ -91,7 +91,7 @@ public class BasketFlows extends BaseFlows {
                 .isEqualTo(expectedBasket);
     }
 
-    public BasketFlows verifyCartTotalValue() {
+    public BasketSteps verifyCartTotalValue() {
         BigDecimal expected = getExpectedBasket().getBasketTotalValue();
         BigDecimal actual = getActualBasket().getBasketTotalValue();
         assertThat(actual).isEqualTo(expected);

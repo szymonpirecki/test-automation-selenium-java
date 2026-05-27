@@ -14,8 +14,8 @@ public class SearchTest extends SearchBase {
     @Test
     @DisplayName("Should return matching results when searching by a randomly selected product name")
     public void shouldReturnResultsForRandomProductTest() {
-        String randomProductName = productFlows.getRandomProduct().getName();
-        List<Product> results = searchFlows
+        String randomProductName = productSteps.getRandomProduct().getName();
+        List<Product> results = searchSteps
                 .search(randomProductName)
                 .getProducts();
 
@@ -28,7 +28,7 @@ public class SearchTest extends SearchBase {
     @Test
     @DisplayName("Should show autocomplete suggestions containing the typed keyword")
     public void shouldShowAutocompleteSuggestionsTest() {
-        List<String> suggestions = searchFlows
+        List<String> suggestions = searchSteps
                 .typeSearchQuery(testData.keyword())
                 .getSearchSuggestions();
 

@@ -14,11 +14,11 @@ public class BasketTest extends BasketBase {
     @Test
     @DisplayName("Should add a product to the basket and reflect the correct popup content and cart count")
     public void shouldAddProductToBasketTest() {
-        Product product = productFlows
+        Product product = productSteps
                 .navigateToCategory(testData.category())
                 .findProduct(testData.productName());
 
-        basketFlows
+        basketSteps
                 .addProductToBasket(product, testData.productQuantity())
                 .verifyCartPopUpContent(product, testData.productQuantity(), testData.shippingPrice())
                 .closeCartPopup()
@@ -29,22 +29,22 @@ public class BasketTest extends BasketBase {
     @DisplayName("Should add 10 random products and verify basket contents match expected state")
     public void shouldAddRandomProductsToBasketTest() {
         for (int i = 0; i < 10; i++) {
-            basketFlows
-                    .addProductToBasket(productFlows.getRandomProduct(), productFlows.getRandomQuantity())
+            basketSteps
+                    .addProductToBasket(productSteps.getRandomProduct(), productSteps.getRandomQuantity())
                     .continueShopping();
         }
-        basketFlows.verifyCartContents();
+        basketSteps.verifyCartContents();
     }
 
     @Test
     @DisplayName("Should remove all products from the basket one by one and verify total updates correctly")
     public void shouldRemoveProductsFromBasketTest() {
         for (int i = 0; i < 2; i++) {
-            basketFlows
-                    .addProductToBasket(productFlows.getRandomProduct(), productFlows.getRandomQuantity())
+            basketSteps
+                    .addProductToBasket(productSteps.getRandomProduct(), productSteps.getRandomQuantity())
                     .continueShopping();
         }
-        int itemCount = basketFlows
+        int itemCount = basketSteps
                 .navigateToBasket()
                 .getActualBasket().getBasketContent().size();
 
@@ -53,11 +53,11 @@ public class BasketTest extends BasketBase {
                 .isGreaterThan(0);
 
         for (int i = 0; i < itemCount; i++) {
-            basketFlows
+            basketSteps
                     .verifyCartTotalValue()
                     .removeFirstItem()
                     .verifyCartTotalValue();
         }
-        basketFlows.verifyCartItemCount(0);
+        basketSteps.verifyCartItemCount(0);
     }
 }

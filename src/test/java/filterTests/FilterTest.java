@@ -14,17 +14,17 @@ public class FilterTest extends FilterBase {
     @Test
     @DisplayName("Should filter products by price range and restore full count after clearing filters")
     public void shouldFilterProductsByPriceRangeTest() {
-        int productCountBeforeFilter = productFlows
+        int productCountBeforeFilter = productSteps
                 .navigateToCategory(testData.category())
                 .getProductCount();
 
-        List<Product> filteredProducts = filterFlows
+        List<Product> filteredProducts = filterSteps
                 .applyPriceFilter(testData.minPrice(), testData.maxPrice())
                 .getProducts();
 
-        filterFlows.verifyProductsWithinPriceRange(filteredProducts, testData.minPrice(), testData.maxPrice());
+        filterSteps.verifyProductsWithinPriceRange(filteredProducts, testData.minPrice(), testData.maxPrice());
 
-        int productCountAfterClear = filterFlows
+        int productCountAfterClear = filterSteps
                 .clearFilters()
                 .getProductCount();
 

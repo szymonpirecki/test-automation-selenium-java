@@ -1,6 +1,6 @@
-package flows.checkout;
+package steps.checkout;
 
-import flows.base.BaseFlows;
+import steps.base.BaseSteps;
 import model.testdata.Address;
 import pages.checkout.CheckoutAddressPage;
 import pages.checkout.CheckoutPaymentPage;
@@ -9,9 +9,9 @@ import pages.checkout.OrderConfirmationPage;
 
 import java.math.BigDecimal;
 
-public class CheckoutFlows extends BaseFlows {
+public class CheckoutSteps extends BaseSteps {
 
-    public CheckoutFlows enterInvoiceAddress(Address invoiceAddress) {
+    public CheckoutSteps enterInvoiceAddress(Address invoiceAddress) {
         at(CheckoutAddressPage.class, page -> {
             page.selectDifferentInvoiceAddress();
             page.fillAddress(invoiceAddress.street(), invoiceAddress.postCode(), invoiceAddress.city(), invoiceAddress.country());
@@ -20,7 +20,7 @@ public class CheckoutFlows extends BaseFlows {
         return this;
     }
 
-    public CheckoutFlows selectDeliveryOption(BigDecimal shippingPrice) {
+    public CheckoutSteps selectDeliveryOption(BigDecimal shippingPrice) {
         at(CheckoutShippingPage.class, page -> {
             page.selectDeliveryOptionByPrice(shippingPrice);
             page.confirmShippingMethod();
@@ -28,12 +28,12 @@ public class CheckoutFlows extends BaseFlows {
         return this;
     }
 
-    public CheckoutFlows selectPayByCheck() {
+    public CheckoutSteps selectPayByCheck() {
         at(CheckoutPaymentPage.class).selectPayByCheck();
         return this;
     }
 
-    public CheckoutFlows placeOrder() {
+    public CheckoutSteps placeOrder() {
         at(CheckoutPaymentPage.class, page -> {
             page.acceptTermsAndConditions();
             page.placeOrder();

@@ -1,8 +1,8 @@
 package searchTests;
 
 import base.TestBase;
-import flows.product.ProductFlows;
-import flows.product.SearchFlows;
+import steps.product.ProductSteps;
+import steps.product.SearchSteps;
 import model.testdata.SearchTestData;
 import org.junit.jupiter.api.BeforeEach;
 import providers.TestDataProvider;
@@ -11,12 +11,12 @@ public class SearchBase extends TestBase {
 
     protected final SearchTestData testData = TestDataProvider.searchTestData();
 
-    SearchFlows searchFlows;
-    ProductFlows productFlows;
+    SearchSteps searchSteps;
+    ProductSteps productSteps;
 
     @BeforeEach
     public void init() {
-        searchFlows = new SearchFlows();
-        productFlows = new ProductFlows();
+        searchSteps = new SearchSteps();
+        productSteps = new ProductSteps();
     }
 }
